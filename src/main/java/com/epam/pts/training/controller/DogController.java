@@ -1,5 +1,6 @@
-package com.epam.pts.training;
+package com.epam.pts.training.controller;
 
+import com.epam.pts.training.entity.Dog;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

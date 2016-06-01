@@ -1,4 +1,4 @@
-package com.epam.pts.training;
+package com.epam.pts.training.entity;
 
 import java.io.Serializable;
 import java.util.Date;
