@@ -1,19 +1,22 @@
 package com.epam.pts.training.controller;
 
 import com.epam.pts.training.entity.Dog;
+import com.epam.pts.training.service.DogService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 @RestController
 public class DogController {
-
-    public final static Collection<Dog> DOGS = Arrays.asList(new Dog("First"), new Dog("Second"));
+    private DogService dogService;
 
     @RequestMapping("/dog")
     public Collection<Dog> getDogs() {
-        return DOGS;
+        return dogService.getDogs();
+    }
+
+    public void setDogService(DogService dogService) {
+        this.dogService = dogService;
     }
 }
