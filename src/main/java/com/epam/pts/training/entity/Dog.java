@@ -1,9 +1,8 @@
 package com.epam.pts.training.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class Dog implements Serializable {
+public class Dog {
     private String name;
     private Date birthDate;
     private Integer height;
