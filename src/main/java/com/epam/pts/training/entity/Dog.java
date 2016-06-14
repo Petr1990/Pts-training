@@ -12,6 +12,9 @@ public class Dog {
     private Integer height;
     private Integer weight;
 
+    public Dog() {
+    }
+
     public Dog(String name) {
         this.id = count.getAndIncrement();
         this.name = name;
