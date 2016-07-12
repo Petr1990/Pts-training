@@ -1,26 +1,42 @@
 package com.epam.pts.training.controller;
 
+import com.epam.pts.training.entity.Dog;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Assert;
+import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.testng.annotations.Test;
 
 import javax.annotation.PostConstruct;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.jayway.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebAppConfiguration
-@ContextConfiguration(locations = { "classpath:test-training-servlet.xml" })
+@ContextConfiguration(locations = {"classpath:test-training-servlet.xml"})
 public class DogControllerTest extends AbstractTestNGSpringContextTests {
+    private final static List<Dog> DOGS = new ArrayList<Dog>(Arrays.asList(new Dog("FirstDog"), new Dog("SecondDog"), new Dog("ThirdDog")));
+    private static final String DOGS_JSON = "[{\"id\":0,\"name\":\"FirstDog\",\"birthDate\":null,\"height\":null,\"weight\":null},{\"id\":1," +
+            "\"name\":\"SecondDog\",\"birthDate\":null,\"height\":null,\"weight\":null},{\"id\":2,\"name\":\"ThirdDog\",\"birthDate\":null," +
+            "\"height\":null,\"weight\":null}]";
+
     @Autowired
     private WebApplicationContext webApplicationContext;
     private MockMvc mockMvc;
@@ -31,34 +47,27 @@ public class DogControllerTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test()
-    public void testGetDogs() {
-        given().when().
-            get("/dog").
-            then().
-            statusCode(200);
+    public void whenGettingDogsResponseIsValidJson() {
+        given().log().all().
+                    contentType("application/json").
+                when().
+                    get("/dog").
+                then().
+                    body(equalTo(DOGS_JSON)).
+                    statusCode(200);
     }
 
     @Test()
-    void testGetDogsController() throws Exception {
-        mockMvc.perform(get("/dog"))
+    void dogsShouldReturnThreeCorrectDogs() throws Exception {
+        MvcResult result = mockMvc.perform(get("/dog"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(new MediaType(MediaType.APPLICATION_JSON.getType(),
                         MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"))))
-                .andExpect(jsonPath("$", hasSize(3)))
-                .andExpect(jsonPath("$[0].id", is(0)))
-                .andExpect(jsonPath("$[0].name", is("FirstDog")))
-                .andExpect(jsonPath("$[0].birthDate", nullValue()))
-                .andExpect(jsonPath("$[0].height", nullValue()))
-                .andExpect(jsonPath("$[0].weight", nullValue()))
-                .andExpect(jsonPath("$[1].id", is(1)))
-                .andExpect(jsonPath("$[1].name", is("SecondDog")))
-                .andExpect(jsonPath("$[1].birthDate", nullValue()))
-                .andExpect(jsonPath("$[1].height", nullValue()))
-                .andExpect(jsonPath("$[1].weight", nullValue()))
-                .andExpect(jsonPath("$[2].id", is(2)))
-                .andExpect(jsonPath("$[2].name", is("ThirdDog")))
-                .andExpect(jsonPath("$[2].birthDate", nullValue()))
-                .andExpect(jsonPath("$[2].height", nullValue()))
-                .andExpect(jsonPath("$[2].weight", nullValue()));
+                .andDo(print())
+                .andReturn();
+        List dogs = new ObjectMapper().readValue(result.getResponse().getContentAsString(), new TypeReference<List<Dog>>() {
+        });
+
+        Assert.assertTrue(new ReflectionEquals(DOGS).matches(dogs));
     }
 }
