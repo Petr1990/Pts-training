@@ -25,6 +25,7 @@
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
+    <!--Use embedded H2 when starting the app-->
     <jdbc:embedded-database id="dataSource" type="H2">
         <jdbc:script location="classpath:sql/create-db.sql" />
         <jdbc:script location="classpath:sql/insert-data.sql" />
@@ -44,6 +45,7 @@
         </property>
     </bean>
 
+    <!--Implement Transactions in the app-->
     <bean id="transactionManager"  class="org.springframework.orm.hibernate5.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>

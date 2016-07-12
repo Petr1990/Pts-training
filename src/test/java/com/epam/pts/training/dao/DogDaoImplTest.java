@@ -8,8 +8,9 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public class DogDaoImplTest {
-    private DogDaoImpl dogDao = new DogDaoImpl();
+    private DogDao dogDao = new DogDaoImpl();
 
+    //Implement a unit test for DAO layer - it checks static collections against expected result
     @Test()
     public void shouldCompareGetDogResponseWithStaticCollection() {
         Dog firstDog = new Dog("First");

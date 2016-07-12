@@ -8,7 +8,7 @@ import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebAppConfiguration
 @ContextConfiguration(locations = {"classpath:test-training-servlet.xml"})
-public class DogControllerTest extends AbstractTestNGSpringContextTests {
+public class DogControllerTest extends AbstractTransactionalTestNGSpringContextTests {
     private final static List<Dog> DOGS = new ArrayList<Dog>(Arrays.asList(new Dog("FirstDog"), new Dog("SecondDog"), new Dog("ThirdDog")));
     private static final String DOGS_JSON = "[{\"id\":0,\"name\":\"FirstDog\",\"birthDate\":null,\"height\":null,\"weight\":null},{\"id\":1," +
             "\"name\":\"SecondDog\",\"birthDate\":null,\"height\":null,\"weight\":null},{\"id\":2,\"name\":\"ThirdDog\",\"birthDate\":null," +
@@ -46,6 +46,7 @@ public class DogControllerTest extends AbstractTestNGSpringContextTests {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
+    //Create a TestNG + RestAssured test that accesses that JSON, parses it and compares to the expected result
     @Test()
     public void whenGettingDogsResponseIsValidJson() {
         given().log().all().
@@ -57,6 +58,8 @@ public class DogControllerTest extends AbstractTestNGSpringContextTests {
                     statusCode(200);
     }
 
+    //Implement Component REST tests by using Spring’s MockMVC
+    //Ensure the test names follow BDD
     @Test()
     void dogsShouldReturnThreeCorrectDogs() throws Exception {
         MvcResult result = mockMvc.perform(get("/dog"))

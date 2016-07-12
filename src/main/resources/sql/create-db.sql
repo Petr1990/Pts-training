@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS DOG;
 CREATE TABLE DOG(
     id INT NOT NULL auto_increment,
     name VARCHAR(50),

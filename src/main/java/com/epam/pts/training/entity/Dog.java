@@ -1,15 +1,26 @@
 package com.epam.pts.training.entity;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Dog {
     private static AtomicInteger count = new AtomicInteger(0);
 
+    //Add a unique integer identifier to Dog
+    //Implement validation with Hibernate Validator (see the validation rules at the top), test the validation
+    @NotNull
     private Integer id;
+    @Size(min = 1, max = 100)
     private String name;
+    @Past
     private Date birthDate;
+    @Min(1)
     private Integer height;
+    @Min(1)
     private Integer weight;
 
     public Dog() {

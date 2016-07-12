@@ -1,5 +1,6 @@
 package com.epam.pts.training.dao;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -7,7 +8,11 @@ public abstract class AbstractDao {
     private SessionFactory sessionFactory;
 
     protected Session getSession() {
-        return sessionFactory.getCurrentSession();
+        try {
+            return sessionFactory.getCurrentSession();
+        } catch (HibernateException e) {
+            return sessionFactory.openSession();
+        }
     }
 
     public void persist(Object entity) {
