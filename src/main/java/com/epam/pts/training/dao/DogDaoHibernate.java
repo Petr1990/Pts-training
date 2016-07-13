@@ -11,4 +11,22 @@ public class DogDaoHibernate extends AbstractDao implements DogDao {
     public Collection<Dog> getDogs() {
         return getSession().createQuery("from Dog", Dog.class).getResultList();
     }
+
+    public Dog createDog(Dog dog) {
+        persist(dog);
+        return dog;
+    }
+
+    public Dog getDog(Integer id) {
+        return getSession().get(Dog.class, id);
+    }
+
+    public Dog updateDog(Dog dog) {
+        getSession().update(dog);
+        return dog;
+    }
+
+    public void deleteDog(Integer id) {
+        delete(getDog(id));
+    }
 }

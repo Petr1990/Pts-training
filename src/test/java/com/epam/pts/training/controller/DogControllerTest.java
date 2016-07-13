@@ -52,7 +52,7 @@ public class DogControllerTest extends AbstractTransactionalTestNGSpringContextT
         given().log().all().
                     contentType("application/json").
                 when().
-                    get("/dog").
+                    get("/dogs").
                 then().
                     body(equalTo(DOGS_JSON)).
                     statusCode(200);
@@ -62,7 +62,7 @@ public class DogControllerTest extends AbstractTransactionalTestNGSpringContextT
     //Ensure the test names follow BDD
     @Test()
     void dogsShouldReturnThreeCorrectDogs() throws Exception {
-        MvcResult result = mockMvc.perform(get("/dog"))
+        MvcResult result = mockMvc.perform(get("/dogs"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(new MediaType(MediaType.APPLICATION_JSON.getType(),
                         MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"))))
