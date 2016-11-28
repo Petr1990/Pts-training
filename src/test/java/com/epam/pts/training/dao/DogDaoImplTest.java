@@ -1,12 +1,15 @@
 package com.epam.pts.training.dao;
 
 import com.epam.pts.training.entity.Dog;
-import org.testng.Assert;
+import org.springframework.transaction.annotation.Transactional;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
 import java.util.Collection;
 
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
+
+@Transactional
 public class DogDaoImplTest {
     private DogDao dogDao = new DogDaoImpl();
 
@@ -21,6 +24,6 @@ public class DogDaoImplTest {
 
         Collection<Dog> dogs = dogDao.getDogs();
 
-        Assert.assertEquals(dogs, referenceDogs);
+        assertReflectionEquals(dogs, referenceDogs);
     }
 }

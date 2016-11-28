@@ -9,7 +9,7 @@ import java.util.Collection;
 public class DogService {
     private DogDao dogDao;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Collection<Dog> getDogs() {
         return dogDao.getDogs();
     }
@@ -19,7 +19,7 @@ public class DogService {
         return dogDao.createDog(dog);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Dog getDog(Integer id) {
         return dogDao.getDog(id);
     }

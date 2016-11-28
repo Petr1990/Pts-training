@@ -99,10 +99,25 @@
         </dependency>
 
         <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>2.0.84-beta</version>
+            <groupId>org.unitils</groupId>
+            <artifactId>unitils-core</artifactId>
+            <version>3.4.2</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>io.qala.datagen</groupId>
+            <artifactId>qala-datagen</artifactId>
+            <version>1.7.1</version>
+        </dependency>
+
+        <!-- Logging -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.6.2</version>
+            <scope>runtime</scope>
+        </dependency>
+
     </dependencies>
 </project>
