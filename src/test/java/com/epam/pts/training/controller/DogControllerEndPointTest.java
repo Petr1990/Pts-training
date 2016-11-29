@@ -17,7 +17,7 @@ public class DogControllerEndPointTest {
         DogTestUtils.DOGS.forEach(this::createDog);
 
         try {
-            Response response = given().log().all().
+            Response response = given().
                     contentType("application/json").
                     when().
                     get("/dogs").
@@ -32,25 +32,21 @@ public class DogControllerEndPointTest {
     }
 
     private void createDog(Dog dog) {
-        Response response = given().log().all().
+        given().
                 contentType("application/json").
                 body(dog.toString()).
                 when().
                 post("/dog").
                 then().
-                statusCode(200).
-                extract().
-                response();
+                statusCode(200);
     }
 
     private void deleteDog(Dog dog) {
-        given().log().all().
+        given().
                 contentType("application/json").
                 when().
                 delete("/dog/" + dog.getId()).
                 then().
-                statusCode(200).
-                extract().
-                response();
+                statusCode(200);
     }
 }
