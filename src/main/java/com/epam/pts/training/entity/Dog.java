@@ -1,5 +1,11 @@
 package com.epam.pts.training.entity;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
@@ -8,6 +14,8 @@ import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Dog {
+    private static final Logger logger = LogManager.getLogger(Dog.class);
+
     private static AtomicInteger count = new AtomicInteger(0);
 
     //Add a unique integer identifier to Dog
@@ -24,6 +32,7 @@ public class Dog {
     private Integer weight;
 
     public Dog() {
+        this.id = count.getAndIncrement();
     }
 
     public Dog(String name) {
@@ -101,5 +110,17 @@ public class Dog {
                 && ((birthDate == null && other.birthDate == null) || (birthDate != null && birthDate.equals(other.birthDate)))
                 && ((height == null && other.height == null) || (height != null && height.equals(other.height)))
                 && ((weight == null && other.weight == null) || (weight != null && weight.equals(other.weight)));
+    }
+
+    @Override
+    public String toString() {
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        try {
+            return ow.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            logger.error(e);
+        }
+
+        return null;
     }
 }

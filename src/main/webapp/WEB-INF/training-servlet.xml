@@ -4,6 +4,8 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
        http://www.springframework.org/schema/mvc
@@ -11,7 +13,18 @@
        http://www.springframework.org/schema/jdbc
        http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd
        http://www.springframework.org/schema/tx
-       http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+       http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--<context:load-time-weaver/>-->
+    <!--<aop:aspectj-autoproxy>-->
+        <!--<aop:include name="springAspect"/>-->
+    <!--</aop:aspectj-autoproxy>-->
+
+    <!--<bean id="springAspect" class="com.epam.pts.training.aspect.SpringAspect"/>-->
 
     <bean class="com.epam.pts.training.controller.DogController">
         <property name="dogService" ref="dogService"/>
@@ -25,11 +38,16 @@
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
-    <!--Use embedded H2 when starting the app-->
-    <jdbc:embedded-database id="dataSource" type="H2">
-        <jdbc:script location="classpath:sql/create-db.sql" />
-        <jdbc:script location="classpath:sql/insert-data.sql" />
-    </jdbc:embedded-database>
+    <bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
+        <property name="driverClassName" value="org.postgresql.Driver" />
+        <property name="url" value="jdbc:postgresql://127.0.0.1:5432/dogsDB" />
+        <property name="username" value="ptsurinov" />
+        <property name="password" value="password" />
+        <property name="initialSize" value="5" />
+        <property name="maxActive" value="10" />
+        <property name="maxIdle" value="5" />
+        <property name="minIdle" value="2" />
+    </bean>
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean" >
         <property name="dataSource" ref="dataSource"/>
@@ -40,7 +58,7 @@
         </property>
         <property name="hibernateProperties">
             <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL94Dialect</prop>
             </props>
         </property>
     </bean>

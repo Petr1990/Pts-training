@@ -19,11 +19,13 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 @WebAppConfiguration
@@ -50,8 +52,8 @@ public class DogControllerSystemTest extends AbstractTransactionalTestNGSpringCo
                         MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"))))
                 .andDo(print())
                 .andReturn();
-        List dogs = new ObjectMapper().readValue(result.getResponse().getContentAsString(), new TypeReference<List<Dog>>() {});
+        List actualDogs = new ObjectMapper().readValue(result.getResponse().getContentAsString(), new TypeReference<List<Dog>>() {});
 
-        assertReflectionEquals(DogTestUtils.DOGS, dogs);
+        assertReflectionEquals(DogTestUtils.DOGS, actualDogs);
     }
 }
