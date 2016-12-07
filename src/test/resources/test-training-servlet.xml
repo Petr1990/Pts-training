@@ -13,6 +13,8 @@
        http://www.springframework.org/schema/tx
        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
+    <mvc:annotation-driven />
+
     <bean class="com.epam.pts.training.controller.DogController">
         <property name="dogService" ref="dogService"/>
     </bean>

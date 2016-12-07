@@ -15,7 +15,7 @@ import java.util.List;
 
 @ContextConfiguration(locations = {"classpath:test-training-servlet.xml"})
 //Make the tests to rollback the transactions after each test
-@Transactional
+//@Transactional
 public class DogDaoHibernateTest extends AbstractTransactionalTestNGSpringContextTests {
     @Autowired
     private DogDao dogDao;
@@ -26,5 +26,25 @@ public class DogDaoHibernateTest extends AbstractTransactionalTestNGSpringContex
         List<Dog> dogs = new ArrayList<>(dogDao.getDogs());
 
         Assert.assertEquals(dogs, DogTestUtils.DOGS);
+    }
+
+    @Test(expectedExceptions = javax.persistence.PersistenceException.class)
+    public void shouldFailIfTryingCreateDogWithNullId() {
+        Dog zeroDog = new Dog("zeroDog");
+
+        zeroDog.setId(null);
+
+        dogDao.createDog(zeroDog);
+    }
+
+    @Test(/*expectedExceptions = javax.persistence.PersistenceException.class*/)
+    public void shouldCheckHibernateValidation() {
+        Dog zeroDog = new Dog("zeroDog");
+
+        zeroDog.setHeight(-1);
+        zeroDog.setWeight(-1);
+
+        zeroDog = dogDao.createDog(zeroDog);
+        zeroDog = dogDao.getDog(zeroDog.getId());
     }
 }
