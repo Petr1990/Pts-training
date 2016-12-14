@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 
 public class DogService {
+    //todo: inject via constructor
     private DogDao dogDao;
 
     @Transactional(readOnly = true)

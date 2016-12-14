@@ -12,23 +12,19 @@ import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEqua
 
 public class DogControllerEndPointTest {
     //Create a TestNG + RestAssured test that accesses that JSON, parses it and compares to the expected result
-    @Test()
+    @Test() //todo: add tests for every endpoint
     public void whenGettingDogsResponseIsValidJson() {
         DogTestUtils.DOGS.forEach(this::createDog);
 
-        try {
-            Response response = given().
-                    contentType("application/json").
-                    when().
-                    get("/dogs").
-                    then().
-                    statusCode(200).
-                    extract().
-                    response();
-            assertReflectionEquals(DogTestUtils.DOGS, Arrays.asList(response.as(Dog[].class)));
-        } finally {
-            DogTestUtils.DOGS.forEach(this::deleteDog);
-        }
+        Response response = given().
+                contentType("application/json").
+                when().
+                get("/dogs").
+                then().
+                statusCode(200).
+                extract().
+                response();
+        assertReflectionEquals(DogTestUtils.DOGS, Arrays.asList(response.as(Dog[].class)));
     }
 
     private void createDog(Dog dog) {

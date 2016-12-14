@@ -20,7 +20,8 @@ public class DogDaoHibernateTest extends AbstractTransactionalTestNGSpringContex
 
     //Implement Hibernate Dao Tests - they need to import spring context and start the embedded H2 DB
     @Test()
-    public void shouldCompareGetDogResponseWithStaticCollection() {
+    public void findsTheDobIfItExists() {
+
         List<Dog> dogs = new ArrayList<>(dogDao.getDogs());
 
         Assert.assertEquals(dogs, DogTestUtils.DOGS);
@@ -34,4 +35,8 @@ public class DogDaoHibernateTest extends AbstractTransactionalTestNGSpringContex
 
         dogDao.createDog(nullDog);
     }
+    @Test public void validationIsInvokedBeforeSavingToDb() {}
+    @Test public void canFitMaxValuesOfDogToDb() {}
+    @Test public void canUpdateAllFields() {}
+    @Test public void cannotFindDogIfItWasRemoved() {}
 }
