@@ -45,7 +45,7 @@ public class DogControllerSystemTest extends AbstractTransactionalTestNGSpringCo
     //Implement Component REST tests by using Spring’s MockMVC
     //Ensure the test names follow BDD
     @Test()
-    public void dogsShouldReturnThreeCorrectDogs() throws Exception {
+    public void dogsShouldReturnThreeCorrectDogs() throws Exception {//todo: should save and check for contains
         MvcResult result = mockMvc.perform(get("/dogs"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(new MediaType(MediaType.APPLICATION_JSON.getType(),
@@ -56,4 +56,6 @@ public class DogControllerSystemTest extends AbstractTransactionalTestNGSpringCo
 
         assertReflectionEquals(DogTestUtils.DOGS, actualDogs);
     }
+    //todo: check all endpoints
+    //todo: if needed add validation tests
 }
