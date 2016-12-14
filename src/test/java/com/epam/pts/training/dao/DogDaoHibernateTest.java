@@ -5,12 +5,10 @@ import com.epam.pts.training.utils.DogTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
-import org.springframework.transaction.annotation.Transactional;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @ContextConfiguration(locations = {"classpath:test-training-servlet.xml"})
@@ -30,21 +28,10 @@ public class DogDaoHibernateTest extends AbstractTransactionalTestNGSpringContex
 
     @Test(expectedExceptions = javax.persistence.PersistenceException.class)
     public void shouldFailIfTryingCreateDogWithNullId() {
-        Dog zeroDog = new Dog("zeroDog");
+        Dog nullDog = new Dog("nullDog");
 
-        zeroDog.setId(null);
+        nullDog.setId(null);
 
-        dogDao.createDog(zeroDog);
-    }
-
-    @Test(/*expectedExceptions = javax.persistence.PersistenceException.class*/)
-    public void shouldCheckHibernateValidation() {
-        Dog zeroDog = new Dog("zeroDog");
-
-        zeroDog.setHeight(-1);
-        zeroDog.setWeight(-1);
-
-        zeroDog = dogDao.createDog(zeroDog);
-        zeroDog = dogDao.getDog(zeroDog.getId());
+        dogDao.createDog(nullDog);
     }
 }
